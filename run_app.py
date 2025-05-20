@@ -13,7 +13,7 @@ if __name__ == "__main__":
     
     # Setup logging
     logger = setup_logging()
-    logger.info("Starting PowerPoint Gesture Control application")
+    logger.info("Starting Gesture Digita application")
     
     # Log system information
     log_system_info()

@@ -1,0 +1,9 @@
+2025-05-21 00:20:13,336 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-21 00:20:13,555 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 00:20:13,555 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 00:20:13,655 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 00:20:13,655 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 00:20:13,698 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 00:20:18,995 - gesture_app - INFO - Initializing Qt application
+2025-05-21 00:20:19,027 - gesture_app - INFO - Created new gesture recognition model
+2025-05-21 00:20:19,043 - gesture_app - ERROR - Initialization error: 'GestureControlApp' object has no attribute 'populateCameraSources'

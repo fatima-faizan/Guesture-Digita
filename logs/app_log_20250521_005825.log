@@ -1,0 +1,11 @@
+2025-05-21 00:58:25,081 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-21 00:58:25,315 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 00:58:25,315 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 00:58:25,418 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 00:58:25,418 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 00:58:25,463 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 00:58:30,700 - gesture_app - INFO - Initializing Qt application
+2025-05-21 00:58:30,716 - gesture_app - ERROR - Training error: Found input variables with inconsistent numbers of samples: [60, 50]
+2025-05-21 00:58:30,716 - gesture_app - INFO - Created and trained new gesture recognition model
+2025-05-21 00:58:32,449 - gesture_app - INFO - Application window displayed
+2025-05-21 00:58:59,460 - gesture_app - ERROR - Prediction error: This RandomForestClassifier instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.

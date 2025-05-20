@@ -1,0 +1,10 @@
+2025-05-21 00:48:16,388 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-21 00:48:16,608 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 00:48:16,608 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 00:48:16,719 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 00:48:16,719 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 00:48:16,760 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 00:48:21,939 - gesture_app - INFO - Initializing Qt application
+2025-05-21 00:48:22,318 - gesture_app - INFO - Model trained with accuracy: 0.0000
+2025-05-21 00:48:22,318 - gesture_app - INFO - Created and trained new gesture recognition model
+2025-05-21 00:48:25,033 - gesture_app - INFO - Application window displayed

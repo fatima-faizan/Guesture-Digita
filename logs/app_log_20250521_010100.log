@@ -1,0 +1,26 @@
+2025-05-21 01:01:00,944 - gesture_app - INFO - Starting Gesture Digita application
+2025-05-21 01:01:01,180 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 01:01:01,180 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 01:01:01,292 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 01:01:01,292 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 01:01:01,331 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 01:01:07,361 - gesture_app - INFO - Initializing Qt application
+2025-05-21 01:01:07,381 - gesture_app - ERROR - Error running application: Found input variables with inconsistent numbers of samples: [60, 50]
+Traceback (most recent call last):
+  File "C:\Users\samee\Desktop\Finalyear\code final\run_app.py", line 33, in <module>
+    window = GestureControlApp()
+  File "C:\Users\samee\Desktop\Finalyear\code final\main.py", line 43, in __init__
+    self.ml_recognizer = MLGestureRecognizer(model_path)
+  File "C:\Users\samee\Desktop\Finalyear\code final\utils\ml_gesture_recognizer.py", line 68, in __init__
+    self.model.fit(self.training_data, self.training_labels)
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\sklearn\base.py", line 1389, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\sklearn\ensemble\_forest.py", line 360, in fit
+    X, y = validate_data(
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\sklearn\utils\validation.py", line 2961, in validate_data
+    X, y = check_X_y(X, y, **check_params)
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\sklearn\utils\validation.py", line 1389, in check_X_y
+    check_consistent_length(X, y)
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\sklearn\utils\validation.py", line 475, in check_consistent_length
+    raise ValueError(
+ValueError: Found input variables with inconsistent numbers of samples: [60, 50]

@@ -1,0 +1,9 @@
+2025-05-21 00:16:43,810 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-21 00:16:44,045 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 00:16:44,045 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 00:16:44,163 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 00:16:44,163 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 00:16:44,215 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 00:16:50,058 - gesture_app - INFO - Initializing Qt application
+2025-05-21 00:16:50,092 - gesture_app - INFO - Created new gesture recognition model
+2025-05-21 00:16:50,127 - gesture_app - ERROR - Initialization error: 'GestureControlApp' object has no attribute 'openGestureSettings'

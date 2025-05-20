@@ -1,0 +1,28 @@
+2025-05-21 00:51:49,226 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-21 00:51:49,450 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 00:51:49,450 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 00:51:49,559 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 00:51:49,562 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 00:51:49,590 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 00:51:55,789 - gesture_app - INFO - Initializing Qt application
+2025-05-21 00:51:56,310 - gesture_app - INFO - Model trained with accuracy: 0.0000
+2025-05-21 00:51:56,310 - gesture_app - INFO - Created and trained new gesture recognition model
+2025-05-21 00:51:58,071 - gesture_app - INFO - Application window displayed
+2025-05-21 00:53:05,310 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,386 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,482 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,595 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,690 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,785 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,881 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:05,996 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,090 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,190 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,329 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,394 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,537 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,589 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,701 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,826 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,936 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.
+2025-05-21 00:53:06,985 - gesture_app - ERROR - Prediction error: X has 177 features, but RandomForestClassifier is expecting 42 features as input.

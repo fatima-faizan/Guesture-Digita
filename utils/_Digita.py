@@ -1,13 +1,12 @@
 import math
+import numpy as np
 
 import cv2
 import mediapipe as mp
 
 
 class HandDetector:
-
-
-    def __init__(self, staticMode=False, maxHands=2, modelComplexity=1, detectionCon=0.5, minTrackCon=0.5):
+    def __init__(self, staticMode=False, maxHands=2, modelComplexity=1, detectionCon=0.8, minTrackCon=0.8):
 
         self.staticMode = staticMode
         self.maxHands = maxHands
@@ -15,99 +14,128 @@ class HandDetector:
         self.detectionCon = detectionCon
         self.minTrackCon = minTrackCon
         self.mpHands = mp.solutions.hands
-        self.hands = self.mpHands.Hands(static_image_mode=self.staticMode,
-                                        max_num_hands=self.maxHands,
-                                        model_complexity=modelComplexity,
-                                        min_detection_confidence=self.detectionCon,
-                                        min_tracking_confidence=self.minTrackCon)
+        self.hands = self.mpHands.Hands(
+            static_image_mode=self.staticMode,
+            max_num_hands=self.maxHands,
+            model_complexity=1,  # Use more complex model
+            min_detection_confidence=self.detectionCon,
+            min_tracking_confidence=self.minTrackCon)
 
         self.mpDraw = mp.solutions.drawing_utils
         self.tipIds = [4, 8, 12, 16, 20]
         self.fingers = []
         self.lmList = []
 
+        # Add smoothing parameters
+        self.smoothening = 0.1
+        self.prev_landmarks = None
+
     def findHands(self, img, draw=True, flipType=True):
         """
-        Finds hands in a BGR image.
-        :param img: Image to find the hands in.
-        :param draw: Flag to draw the output on the image.
-        :return: Image with or without drawings
+        Enhanced hand detection with smoothing
         """
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         self.results = self.hands.process(imgRGB)
+
         allHands = []
         h, w, c = img.shape
         if self.results.multi_hand_landmarks:
             for handType, handLms in zip(self.results.multi_handedness, self.results.multi_hand_landmarks):
                 myHand = {}
-                ## lmList
                 mylmList = []
                 xList = []
                 yList = []
+
+                # Apply smoothing to landmarks
+                if self.prev_landmarks is not None:
+                    for i, lm in enumerate(handLms.landmark):
+                        prev_lm = self.prev_landmarks[i]
+                        lm.x = prev_lm[0] * self.smoothening + lm.x * (1 - self.smoothening)
+                        lm.y = prev_lm[1] * self.smoothening + lm.y * (1 - self.smoothening)
+                        lm.z = prev_lm[2] * self.smoothening + lm.z * (1 - self.smoothening)
+
+                # Store current landmarks for next frame
+                self.prev_landmarks = [(lm.x, lm.y, lm.z) for lm in handLms.landmark]
+
+                # Process landmarks with improved precision
                 for id, lm in enumerate(handLms.landmark):
-                    px, py, pz = int(lm.x * w), int(lm.y * h), int(lm.z * w)
-                    mylmList.append([px, py, pz])
+                    px, py, pz = float(lm.x * w), float(lm.y * h), float(lm.z * w)
+                    mylmList.append([int(px), int(py), pz])
                     xList.append(px)
                     yList.append(py)
 
-                ## bbox
+                # Calculate bounding box with padding
                 xmin, xmax = min(xList), max(xList)
                 ymin, ymax = min(yList), max(yList)
                 boxW, boxH = xmax - xmin, ymax - ymin
-                bbox = xmin, ymin, boxW, boxH
-                cx, cy = bbox[0] + (bbox[2] // 2), \
-                         bbox[1] + (bbox[3] // 2)
+                bbox = xmin - 20, ymin - 20, boxW + 40, boxH + 40
+                cx, cy = bbox[0] + (bbox[2] // 2), bbox[1] + (bbox[3] // 2)
 
                 myHand["lmList"] = mylmList
                 myHand["bbox"] = bbox
-                myHand["center"] = (cx, cy)
+                myHand["center"] = (int(cx), int(cy))
+                myHand["confidence"] = handType.classification[0].score
 
-                if flipType:
-                    if handType.classification[0].label == "Right":
-                        myHand["type"] = "Left"
+                # Only include hands with high confidence
+                if myHand["confidence"] > 0.8:
+                    if flipType:
+                        if handType.classification[0].label == "Right":
+                            myHand["type"] = "Left"
+                        else:
+                            myHand["type"] = "Right"
                     else:
-                        myHand["type"] = "Right"
-                else:
-                    myHand["type"] = handType.classification[0].label
-                allHands.append(myHand)
+                        myHand["type"] = handType.classification[0].label
+                    allHands.append(myHand)
 
-                ## draw
                 if draw:
-                    self.mpDraw.draw_landmarks(img, handLms,
-                                               self.mpHands.HAND_CONNECTIONS)
-                    cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20),
-                                  (bbox[0] + bbox[2] + 20, bbox[1] + bbox[3] + 20),
-                                  (255, 0, 255), 2)
-                    cv2.putText(img, myHand["type"], (bbox[0] - 30, bbox[1] - 30), cv2.FONT_HERSHEY_PLAIN,
-                                2, (255, 0, 255), 2)
+                    self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS,
+                                               self.mpDraw.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
+                                               self.mpDraw.DrawingSpec(color=(0, 0, 255), thickness=2))
+
+                    cv2.rectangle(img, (int(bbox[0]), int(bbox[1])),
+                                  (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3])),
+                                  (0, 255, 0), 2)
+
+                    cv2.putText(img, f"{myHand['type']} ({myHand['confidence']:.2f})",
+                                (int(bbox[0]), int(bbox[1] - 30)),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
         return allHands, img
 
     def fingersUp(self, myHand):
-
+        """
+        Enhanced finger detection with improved angle calculation
+        """
         fingers = []
         myHandType = myHand["type"]
         myLmList = myHand["lmList"]
-        if self.results.multi_hand_landmarks:
 
-            # Thumb
-            if myHandType == "Right":
-                if myLmList[self.tipIds[0]][0] > myLmList[self.tipIds[0] - 1][0]:
-                    fingers.append(1)
-                else:
-                    fingers.append(0)
-            else:
-                if myLmList[self.tipIds[0]][0] < myLmList[self.tipIds[0] - 1][0]:
-                    fingers.append(1)
-                else:
-                    fingers.append(0)
+        def calculate_angle(a, b, c):
+            a = np.array([myLmList[a][0], myLmList[a][1]])
+            b = np.array([myLmList[b][0], myLmList[b][1]])
+            c = np.array([myLmList[c][0], myLmList[c][1]])
 
-            # 4 Fingers
-            for id in range(1, 5):
-                if myLmList[self.tipIds[id]][1] < myLmList[self.tipIds[id] - 2][1]:
-                    fingers.append(1)
-                else:
-                    fingers.append(0)
+            ba = a - b
+            bc = c - b
+
+            cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+            angle = np.arccos(cosine_angle)
+
+            return np.degrees(angle)
+
+        # Improved thumb detection using angle
+        if myHandType == "Right":
+            angle = calculate_angle(4, 3, 2)
+            fingers.append(1 if angle > 150 else 0)
+        else:
+            angle = calculate_angle(4, 3, 2)
+            fingers.append(1 if angle > 150 else 0)
+
+        # Improved finger detection using angles
+        for id in range(1, 5):
+            angle = calculate_angle(self.tipIds[id], self.tipIds[id] - 2, self.tipIds[id] - 3)
+            fingers.append(1 if angle > 160 else 0)
+
         return fingers
 
     def findDistance(self, p1, p2, img=None, color=(255, 0, 255), scale=5):
@@ -190,8 +218,9 @@ def main():
 
             print(" ")  # New line for better readability of the printed output
 
-        # Display the image in a window
-        cv2.imshow("Image", img)
+        # Display the image in a window if it's not None
+        if img is not None:
+            cv2.imshow("Image", img)
 
         # Keep the window open and update it for each frame; wait for 1 millisecond between frames
         cv2.waitKey(1)
