@@ -63,6 +63,21 @@ class GestureControlApp(QMainWindow):
         self.imgNumber = 0
         self.delayCounter = 0
         
+        # Add flags for separate windows
+        self.camera_window = None
+        self.slide_window = None
+        self.setup_separate_windows()
+    
+    def setup_separate_windows(self):
+        """Create separate windows for camera feed and presentation"""
+        # Create camera window
+        self.camera_window = cv2.namedWindow("Camera Feed", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Camera Feed", 640, 480)
+        
+        # Create presentation window
+        self.slide_window = cv2.namedWindow("Presentation", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Presentation", 1280, 720)
+    
     def initUI(self):
         # Main window setup
         self.setWindowTitle("PowerPoint Gesture Control")
@@ -220,31 +235,9 @@ class GestureControlApp(QMainWindow):
                 self.current_slide_image = cv2.imread(self.slide_images[self.current_slide_idx])
                 if self.current_slide_image is not None:
                     self.current_slide_image = cv2.resize(self.current_slide_image, (1280, 720))
-                    self.updateDisplay()
+                    self.updatePresentationWindow()
             except Exception as e:
                 self.statusBar.showMessage(f"Error displaying slide: {str(e)}")
-
-    def updateDisplay(self):
-        if self.current_slide_image is None:
-            return
-            
-        # Create a copy to draw on
-        display_image = self.current_slide_image.copy()
-        
-        # Draw all annotations
-        display_image = self.drawing_helper.draw_annotations(display_image)
-        
-        # Add camera overlay (similar to reference code)
-        if self.current_frame is not None:
-            imgSmall = cv2.resize(self.current_frame, (self.ws, self.hs))
-            h, w, _ = display_image.shape
-            display_image[0:self.hs, w-self.ws:w] = imgSmall
-        
-        # Convert to Qt format and display
-        rgb_image = cv2.cvtColor(display_image, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        qt_image = QImage(rgb_image.data, w, h, ch * w, QImage.Format_RGB888)
-        self.videoWidget.setPixmap(QPixmap.fromImage(qt_image))
 
     def updateSlideLabel(self):
         if self.slide_images:
@@ -305,11 +298,10 @@ class GestureControlApp(QMainWindow):
         if success:
             img = cv2.flip(img, 1)
             
-            # Process hand detection with error handling
+            # Process hand detection
             try:
                 hands, img = self.detectorHand.findHands(img)
                 
-                # Update hand status label
                 if hands:
                     self.handStatusLabel.setText(f"Hand Detection: Detected {len(hands)} hand(s)")
                 else:
@@ -321,35 +313,56 @@ class GestureControlApp(QMainWindow):
                 self.statusBar.showMessage(f"Error in hand detection: {str(e)}")
             
             # Draw gesture threshold line
-            cv2.line(img, (0, self.gestureThreshold), (self.width, self.gestureThreshold), (0, 255, 0), 5)
+            cv2.line(img, (0, self.gestureThreshold), (self.width, self.gestureThreshold), 
+                     (0, 255, 0), 5)
             cv2.putText(img, "Gesture Threshold", (10, self.gestureThreshold - 10), 
                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             
-            # Handle gestures if PowerPoint is open
+            # Handle gestures
             if hands and self.buttonPressed is False and self.slide_images:
                 self.processHandGestures(hands, img)
             else:
-                self.annotationStart = False
+                self.drawing_helper.stop_annotation()
 
             if self.buttonPressed:
                 self.counter += 1
                 if self.counter > self.delay:
                     self.counter = 0
                     self.buttonPressed = False
-                    
-            # Convert to QImage and display with error handling
-            try:
-                rgb_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                h, w, ch = rgb_image.shape
-                bytes_per_line = ch * w
-                qt_image = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
-                scaled_image = qt_image.scaled(self.videoWidget.width(), self.videoWidget.height(), 
-                                            Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                self.videoWidget.setPixmap(QPixmap.fromImage(scaled_image))
-            except Exception as e:
-                self.statusBar.showMessage(f"Error processing video frame: {str(e)}")
-        else:
-            self.statusBar.showMessage("Failed to capture video frame")
+            
+            # Show camera feed
+            cv2.imshow("Camera Feed", img)
+            
+            # Update the presentation window if we have a slide
+            if self.current_slide_image is not None:
+                self.updatePresentationWindow()
+
+    def updatePresentationWindow(self):
+        """Update the presentation window with current slide and annotations"""
+        if self.current_slide_image is None:
+            return
+            
+        # Create a copy to draw on
+        display_image = self.current_slide_image.copy()
+        
+        # Draw annotations
+        display_image = self.drawing_helper.draw_annotations(display_image)
+        
+        # Show presentation
+        cv2.imshow("Presentation", display_image)
+    
+    def closeEvent(self, event):
+        """Handle application closing"""
+        # Close OpenCV windows
+        cv2.destroyAllWindows()
+        
+        # Stop camera if running
+        if self.cap and self.cap.isOpened():
+            self.cap.release()
+        
+        # Cleanup
+        self.ppt_converter.cleanup()
+        event.accept()
 
     def openThresholdSettings(self):
         dialog = ThresholdSettingsDialog(self.gestureThreshold, self)
@@ -401,20 +414,20 @@ class GestureControlApp(QMainWindow):
             # Pointer mode
             if fingers == [0, 1, 1, 0, 0]:
                 cv2.circle(self.current_slide_image, indexFinger, 12, (0, 0, 255), cv2.FILLED)
-                self.updateDisplay()
+                self.updatePresentationWindow()
             
             # Drawing mode
             if fingers == [0, 1, 0, 0, 0]:
                 self.drawing_helper.start_annotation(indexFinger)
                 cv2.circle(self.current_slide_image, indexFinger, 12, (0, 0, 255), cv2.FILLED)
-                self.updateDisplay()
+                self.updatePresentationWindow()
             else:
                 self.drawing_helper.stop_annotation()
             
             # Erase last annotation
             if fingers == [0, 1, 1, 1, 0]:
                 self.drawing_helper.undo_last_annotation()
-                self.updateDisplay()
+                self.updatePresentationWindow()
                 self.buttonPressed = True
                 
         except Exception as e:
