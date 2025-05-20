@@ -1,0 +1,13 @@
+2025-05-20 22:14:43,531 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-20 22:14:44,771 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-20 22:14:44,771 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-20 22:14:44,908 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-20 22:14:44,908 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-20 22:14:44,966 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-20 22:14:50,089 - comtypes.client._code_cache - INFO - Could not import comtypes.gen, trying to create it.
+2025-05-20 22:14:50,089 - comtypes.client._code_cache - INFO - Created comtypes.gen directory: 'C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\comtypes\gen'
+2025-05-20 22:14:50,089 - comtypes.client._code_cache - INFO - Writing __init__.py file: 'C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\comtypes\gen\__init__.py'
+2025-05-20 22:14:50,089 - comtypes.client._code_cache - INFO - Using writeable comtypes cache directory: 'C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\comtypes\gen'
+2025-05-20 22:14:50,105 - gesture_app - INFO - Initializing Qt application
+2025-05-20 22:14:52,385 - gesture_app - INFO - Application window displayed
+2025-05-20 22:15:05,190 - gesture_app - ERROR - Error converting PPT to images: (-2147352567, 'Exception occurred.', (0, 'Microsoft PowerPoint', 'Application.Visible : Invalid request.  Hiding the application window is not allowed.', '', 0, -2147188160), None)

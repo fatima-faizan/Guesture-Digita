@@ -1,0 +1,18 @@
+2025-05-20 22:00:26,024 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-20 22:00:26,259 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-20 22:00:26,259 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-20 22:00:29,799 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-20 22:00:29,799 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-20 22:00:29,862 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-20 22:00:34,782 - gesture_app - INFO - Initializing Qt application
+2025-05-20 22:00:34,821 - gesture_app - ERROR - Error running application: 'GestureControlApp' object has no attribute 'openGestureSettings'
+Traceback (most recent call last):
+  File "C:\Users\samee\Desktop\Finalyear\code final\run_app.py", line 32, in <module>
+    window = GestureControlApp()
+  File "C:\Users\samee\Desktop\Finalyear\code final\main.py", line 49, in __init__
+    self.initUI()
+  File "C:\Users\samee\Desktop\Finalyear\code final\main.py", line 66, in initUI
+    self.createMenuBar()
+  File "C:\Users\samee\Desktop\Finalyear\code final\main.py", line 162, in createMenuBar
+    customizeAction.triggered.connect(self.openGestureSettings)
+AttributeError: 'GestureControlApp' object has no attribute 'openGestureSettings'

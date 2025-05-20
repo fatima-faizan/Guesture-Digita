@@ -1,0 +1,9 @@
+2025-05-20 22:24:23,213 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-20 22:24:23,434 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-20 22:24:23,434 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-20 22:24:23,551 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-20 22:24:23,551 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-20 22:24:23,601 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-20 22:24:28,771 - gesture_app - INFO - Initializing Qt application
+2025-05-20 22:24:31,071 - gesture_app - INFO - Application window displayed
+2025-05-20 22:24:39,471 - gesture_app - ERROR - Error converting PPT to images: (-2147352567, 'Exception occurred.', (0, 'Microsoft PowerPoint', 'Application.Visible : Invalid request.  Hiding the application window is not allowed.', '', 0, -2147188160), None)

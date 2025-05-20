@@ -1,0 +1,27 @@
+2025-05-20 22:14:23,723 - gesture_app - INFO - Starting PowerPoint Gesture Control application
+2025-05-20 22:14:23,992 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-20 22:14:23,992 - gesture_app - INFO - NumPy Version: 1.22.3
+2025-05-20 22:14:24,109 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-20 22:14:24,109 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-20 22:14:24,125 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-20 22:14:24,282 - gesture_app - ERROR - Error running application: Matplotlib requires numpy>=1.23; you have 1.22.3
+Traceback (most recent call last):
+  File "C:\Users\samee\Desktop\Finalyear\code final\run_app.py", line 23, in <module>
+    from main import GestureControlApp
+  File "C:\Users\samee\Desktop\Finalyear\code final\main.py", line 16, in <module>
+    from utils._Digita import HandDetector
+  File "C:\Users\samee\Desktop\Finalyear\code final\utils\_Digita.py", line 4, in <module>
+    import mediapipe as mp
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\mediapipe\__init__.py", line 16, in <module>
+    import mediapipe.python.solutions as solutions
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\mediapipe\python\solutions\__init__.py", line 17, in <module>
+    import mediapipe.python.solutions.drawing_styles
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\mediapipe\python\solutions\drawing_styles.py", line 20, in <module>
+    from mediapipe.python.solutions.drawing_utils import DrawingSpec
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\mediapipe\python\solutions\drawing_utils.py", line 21, in <module>
+    import matplotlib.pyplot as plt
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\matplotlib\__init__.py", line 264, in <module>
+    _check_versions()
+  File "C:\Users\samee\anaconda3\envs\officeai\lib\site-packages\matplotlib\__init__.py", line 260, in _check_versions
+    raise ImportError(f"Matplotlib requires {modname}>={minver}; "
+ImportError: Matplotlib requires numpy>=1.23; you have 1.22.3
