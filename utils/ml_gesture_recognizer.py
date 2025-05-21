@@ -127,7 +127,7 @@ class MLGestureRecognizer:
 
             # Reshape and predict
             features = np.array(features).reshape(1, -1)
-            probas = self.model.predict_proba(features)[0]
+            probas = self.model.predict_proba(features)[0] # type: ignore
             prediction_idx = np.argmax(probas)
             confidence = probas[prediction_idx]
             

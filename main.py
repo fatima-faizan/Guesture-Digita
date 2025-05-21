@@ -1,6 +1,7 @@
 import sys
 import cv2
 import os
+import logging
 import numpy as np
 from PyQt5.QtCore import Qt, QTimer, pyqtSlot, QSize, QPropertyAnimation, QRect
 from PyQt5.QtGui import QImage, QPixmap, QIcon, QColor, QPalette, QFont

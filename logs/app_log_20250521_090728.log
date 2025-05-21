@@ -1,0 +1,9 @@
+2025-05-21 09:07:28,525 - gesture_app - INFO - Starting Gesture Digita application
+2025-05-21 09:07:29,320 - gesture_app - INFO - OpenCV Version: 4.11.0
+2025-05-21 09:07:29,321 - gesture_app - INFO - NumPy Version: 1.26.4
+2025-05-21 09:07:29,765 - gesture_app - INFO - PyQt5 Version: 5.15.6
+2025-05-21 09:07:29,766 - gesture_app - INFO - Python Version: 3.10.17
+2025-05-21 09:07:29,897 - gesture_app - INFO - Platform: Windows-10-10.0.26100-SP0
+2025-05-21 09:07:43,941 - gesture_app - INFO - Initializing Qt application
+2025-05-21 09:07:44,581 - gesture_app - INFO - Model saved to C:\Users\samee\Desktop\Finalyear\code final\models\gesture_model.pkl
+2025-05-21 09:07:48,878 - gesture_app - INFO - Application window displayed
