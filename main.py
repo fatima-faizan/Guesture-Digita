@@ -27,6 +27,9 @@ class GestureControlApp(QMainWindow):
     def __init__(self):
         super().__init__()
         
+        # Initialize logger
+        self.logger = self.setup_logger()
+        
         # Initialize properties
         self.width, self.height = 1280, 720
         self.gestureThreshold = 600
@@ -80,6 +83,42 @@ class GestureControlApp(QMainWindow):
         self.last_gesture_time = 0
         self.gesture_cooldown = 1.0  # seconds between gestures
         self.last_processed_gesture = None
+        
+    def setup_logger(self):
+        """Setup logging for the application"""
+        logger = logging.getLogger('gesture_app')
+        
+        # Create handler if not already configured
+        if not logger.handlers:
+            # Configure logger
+            logger.setLevel(logging.INFO)
+            
+            # Create logs directory if it doesn't exist
+            log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
+            os.makedirs(log_dir, exist_ok=True)
+            
+            # File handler
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            log_file = os.path.join(log_dir, f"app_log_{timestamp}.log")
+            
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.INFO)
+            
+            # Console handler
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.INFO)
+            
+            # Format
+            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            file_handler.setFormatter(formatter)
+            console_handler.setFormatter(formatter)
+            
+            # Add handlers
+            logger.addHandler(file_handler)
+            logger.addHandler(console_handler)
+        
+        return logger
         
     def setup_separate_windows(self):
         """Remove separate OpenCV windows"""
@@ -604,49 +643,55 @@ class GestureControlApp(QMainWindow):
                 return
 
             img = cv2.flip(img, 1)
-            hands, _ = self.detectorHand.findHands(img, draw=True)
             
-            # Create display image based on mode
-            if self.hand_only_mode:
-                display_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-                
-                if hands:
-                    self.handStatusLabel.setText(f"Hand Detection: Detected {len(hands)} hand(s)")
-                    self.drawHandSkeleton(display_img, hands)
-                else:
-                    self.handStatusLabel.setText("Hand Detection: No hands detected")
-            else:
-                display_img = img
-
-            # Draw threshold line
-            cv2.line(display_img, (0, self.gestureThreshold), 
-                     (self.width, self.gestureThreshold), (0, 255, 0), 2)
-            
-            # Convert to Qt format with error handling
             try:
-                h, w, ch = display_img.shape
-                bytes_per_line = ch * w
-                qt_img = QImage(display_img.data, w, h, bytes_per_line, QImage.Format_BGR888)
-                if not qt_img.isNull():
-                    pixmap = QPixmap.fromImage(qt_img)
-                    scaled_pixmap = pixmap.scaled(
-                        self.previewWidget.size(),
-                        Qt.KeepAspectRatio,
-                        Qt.SmoothTransformation
-                    )
-                    self.previewWidget.setPixmap(scaled_pixmap)
-            except Exception as e:
-                self.logger.error(f"Qt image conversion error: {str(e)}")
-            
-            # Process gestures
-            if hands and not self.buttonPressed and self.slide_images:
-                self.processHandGestures(hands, display_img)
-            else:
-                self.drawing_helper.stop_annotation()
+                hands, _ = self.detectorHand.findHands(img, draw=True)
+                
+                # Create display image based on mode
+                if self.hand_only_mode:
+                    display_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+                    
+                    if hands:
+                        self.handStatusLabel.setText(f"Hand Detection: Detected {len(hands)} hand(s)")
+                        self.drawHandSkeleton(display_img, hands)
+                    else:
+                        self.handStatusLabel.setText("Hand Detection: No hands detected")
+                else:
+                    display_img = img
+
+                # Draw threshold line
+                cv2.line(display_img, (0, self.gestureThreshold), 
+                        (self.width, self.gestureThreshold), (0, 255, 0), 2)
+                
+                # Convert to Qt format with error handling
+                try:
+                    h, w, ch = display_img.shape
+                    bytes_per_line = ch * w
+                    qt_img = QImage(display_img.data, w, h, bytes_per_line, QImage.Format_BGR888)
+                    if not qt_img.isNull():
+                        pixmap = QPixmap.fromImage(qt_img)
+                        scaled_pixmap = pixmap.scaled(
+                            self.previewWidget.size(),
+                            Qt.KeepAspectRatio,
+                            Qt.SmoothTransformation
+                        )
+                        self.previewWidget.setPixmap(scaled_pixmap)
+                except Exception as e:
+                    self.logger.error(f"Qt image conversion error: {str(e)}")
+                
+                # Process gestures
+                if hands and not self.buttonPressed and self.slide_images:
+                    self.processHandGestures(hands, display_img)
+                else:
+                    self.drawing_helper.stop_annotation()
+                    
+            except KeyError as ke:
+                self.logger.error(f"KeyError in hand detection: {str(ke)}")
+                self.handStatusLabel.setText("Hand Detection: Error processing hand data")
 
         except Exception as e:
             self.logger.error(f"Frame update error: {str(e)}")
-
+    
     def drawHandSkeleton(self, canvas, hands):
         """Draw hand skeleton with connections"""
         for hand in hands:

@@ -76,18 +76,21 @@ class HandDetector:
                 myHand["center"] = (int(cx), int(cy))
                 myHand["confidence"] = handType.classification[0].score
 
+                # Set hand type before using it
+                if flipType:
+                    if handType.classification[0].label == "Right":
+                        myHand["type"] = "Left"
+                    else:
+                        myHand["type"] = "Right"
+                else:
+                    myHand["type"] = handType.classification[0].label
+
                 # Only include hands with high confidence
                 if myHand["confidence"] > 0.8:
-                    if flipType:
-                        if handType.classification[0].label == "Right":
-                            myHand["type"] = "Left"
-                        else:
-                            myHand["type"] = "Right"
-                    else:
-                        myHand["type"] = handType.classification[0].label
                     allHands.append(myHand)
 
-                if draw:
+                # Only draw if we have a valid hand and draw is enabled
+                if draw and "type" in myHand:
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS,
                                                self.mpDraw.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2),
                                                self.mpDraw.DrawingSpec(color=(0, 0, 255), thickness=2))
