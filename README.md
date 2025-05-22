@@ -56,6 +56,24 @@ python run_app.py
 - TensorFlow 2.10.0+
 - Other dependencies listed in `requirements.txt`
 
+## Hardware Requirements
+
+### Components
+- Arduino Nano (ATmega328P)
+- 3x Flex Sensors (4.5")
+- HC-05 Bluetooth Module
+- 10kΩ Resistors (3x)
+- Connecting wires
+- USB cable for Arduino
+
+### Additional Requirements
+- Soldering iron and solder
+- Breadboard for prototyping
+- Multimeter for testing
+- Heat shrink tubing
+
+For detailed technical documentation, including circuit diagrams, implementation details, and troubleshooting guides, see [Technical Documentation](docs/technical_documentation.md).
+
 ## Project Structure
 
 ```
@@ -117,6 +135,36 @@ Common issues and solutions:
    - Reduce the camera resolution if needed
    - Ensure system meets minimum requirements
 
+## Core Workflow
+
+1. **Presentation Processing**
+   - Supports both PowerPoint (.ppt, .pptx) and PDF files
+   - Converts presentations into high-quality PNG images (1280x720)
+   - Preserves text content for ML analysis
+   - Stores slides in temporary "Presentation" folder
+   - Analyzes slide complexity for gesture sensitivity
+
+2. **Gesture Recognition**
+   - Real-time hand landmark detection (21 points)
+   - Normalized 3D coordinates for consistent recognition
+   - Gesture smoothing with temporal filtering
+   - Confidence scoring (0.0-1.0) for each gesture
+   - Gesture state machine for robust transitions
+
+3. **Drawing & Annotation System**
+   - Vector-based drawing for smooth lines
+   - Point-based gesture tracking (12px thickness)
+   - RGB color system (default: red=0, blue=200)
+   - Annotation history for undo/redo
+   - Multi-layer drawing support
+
+4. **Performance Optimizations**
+   - Slide caching for instant transitions
+   - Parallel image processing
+   - Memory-efficient slide storage
+   - Background thread for ML processing
+   - Frame skip for smooth performance
+
 ## Contributing
 
 1. Fork the repository
@@ -138,4 +186,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-For questions and support, please open an issue on the GitHub repository or contact the development team at your.email@example.com.
+For questions and support, please open an issue on the GitHub repository or contact the development team at bsem-f21-129@superior.edu.pk

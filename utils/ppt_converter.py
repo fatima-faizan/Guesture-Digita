@@ -8,6 +8,7 @@ import pythoncom
 import time
 import numpy as np
 
+
 class PPTConverter:
     def __init__(self):
         self.logger = logging.getLogger('gesture_app')

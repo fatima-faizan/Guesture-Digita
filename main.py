@@ -23,6 +23,7 @@ from utils.ml_gesture_recognizer import MLGestureRecognizer
 import win32com.client
 import time
 
+
 class GestureControlApp(QMainWindow):
     def __init__(self):
         super().__init__()

@@ -17,6 +17,7 @@ if __name__ == "__main__":
     
     # Log system information
     log_system_info()
+  
     
     try:
         # Import and run the main application

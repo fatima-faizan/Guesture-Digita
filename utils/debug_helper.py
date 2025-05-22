@@ -13,6 +13,7 @@ def setup_environment():
     os.environ["OPENCV_VIDEOIO_DEBUG"] = "0"
     os.environ["OPENCV_VIDEOIO_PRIORITY_MSMF"] = "0"
     
+    
     # Disable MediaPipe logging completely
     os.environ["GLOG_minloglevel"] = "2"
     os.environ["MEDIAPIPE_DISABLE_GPU"] = "1"

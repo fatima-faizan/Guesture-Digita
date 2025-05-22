@@ -21,6 +21,7 @@ class MLGestureRecognizer:
             "erase",           # Index, middle, and ring up
             "none"             # No gesture
         ]
+   
         
         # Fixed number of samples
         n_landmarks = 21

@@ -13,7 +13,9 @@ class DrawingHelper:
             self.annotation_number += 1
             self.annotations.append([])
         self.annotations[self.annotation_number].append(point)
-        
+
+ 
+
     def stop_annotation(self):
         self.annotation_start = False
         
