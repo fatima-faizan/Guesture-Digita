@@ -59,7 +59,7 @@ python run_app.py
 ## Hardware Requirements
 
 ### Components
-- Arduino Nano (ATmega328P)
+- Arduino Nano (V3)
 - 3x Flex Sensors (4.5")
 - HC-05 Bluetooth Module
 - 10kΩ Resistors (3x)
